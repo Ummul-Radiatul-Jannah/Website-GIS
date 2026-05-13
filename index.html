@@ -1,14 +1,658 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hello World</title>
-  <link href='/style.css' rel='stylesheet'>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>GIS for Business – I Am Geprek | Analisis Spasial</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red:      #C0392B;
+    --orange:   #E67E22;
+    --cream:    #FDF6EC;
+    --dark:     #1A1209;
+    --mid:      #3D2B1F;
+    --gold:     #D4A847;
+    --warm-alt: #F0E6D6;
+    --border:   rgba(192,57,43,0.18);
+    --inner-max: 1200px;
+    --sec-pad:  90px 40px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--dark); overflow-x: hidden; }
+
+  /* ───── HERO ───── */
+  #hero {
+    min-height: 100vh;
+    background: var(--dark);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+    padding: 60px 24px; text-align: center;
+  }
+  #hero::before {
+    content: ''; position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 70% 55% at 50% -10%, rgba(192,57,43,0.45) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 30% at 80% 110%, rgba(230,126,34,0.3) 0%, transparent 60%);
+  }
+  .hero-badge {
+    display: inline-block; border: 1.5px solid var(--gold); color: var(--gold);
+    font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+    padding: 6px 20px; border-radius: 100px; margin-bottom: 28px;
+    position: relative; z-index: 1; animation: fadeDown .8s ease both;
+  }
+  .hero-title {
+    font-family: 'Playfair Display', serif; font-size: clamp(52px, 10vw, 120px);
+    font-weight: 900; line-height: .92; color: #fff;
+    position: relative; z-index: 1; animation: fadeDown .9s .1s ease both;
+  }
+  .hero-title span { color: var(--orange); }
+  .hero-sub {
+    font-size: clamp(14px, 2vw, 18px); font-weight: 300; color: rgba(255,255,255,.65);
+    margin-top: 24px; max-width: 560px;
+    position: relative; z-index: 1; animation: fadeDown 1s .2s ease both; line-height: 1.7;
+  }
+  .scroll-hint {
+    position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    color: rgba(255,255,255,.4); font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+    z-index: 1; animation: bounce 2s infinite;
+  }
+  .scroll-hint::after { content: ''; width: 1px; height: 36px; background: rgba(255,255,255,.3); }
+
+  /* only one divider — under hero */
+  .hero-divider {
+    width: 100%; height: 5px;
+    background: linear-gradient(90deg, var(--red), var(--orange), var(--gold), var(--orange), var(--red));
+  }
+
+  .container-inner { max-width: var(--inner-max); margin: 0 auto; }
+
+  .section-label {
+    font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--red); font-weight: 600; margin-bottom: 12px;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif; font-size: clamp(32px, 5vw, 54px);
+    font-weight: 700; line-height: 1.1; color: var(--dark); margin-bottom: 24px;
+  }
+  .section-title em { font-style: italic; color: var(--red); }
+
+  /* ───── TEAM — bg cream ───── */
+  .team-section { background: var(--cream); padding: var(--sec-pad); }
+  .team-header { text-align: center; margin-bottom: 52px; }
+  .team-header .section-title { color: var(--red); margin-bottom: 8px; }
+  .team-subhead { color: #7a5c48; font-size: 14px; }
+
+  .members-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 26px;
+  }
+  .member-card {
+    background: #fff; border-radius: 24px; padding: 30px 16px 26px;
+    text-align: center;
+    box-shadow: 0 8px 28px rgba(0,0,0,.06);
+    border: 1px solid rgba(192,57,43,.09);
+    transition: transform .25s, box-shadow .3s;
+    display: flex; flex-direction: column; align-items: center;
+  }
+  .member-card:hover { transform: translateY(-7px); box-shadow: 0 18px 40px rgba(0,0,0,.11); }
+
+  .member-avatar-wrap {
+    width: 140px; height: 140px; border-radius: 50%;
+    background: linear-gradient(145deg, var(--orange), var(--red));
+    padding: 3.5px; margin-bottom: 18px; flex-shrink: 0;
+  }
+  .member-avatar {
+    width: 100%; height: 100%; border-radius: 50%;
+    background: #f0e9e2;
+    display: flex; align-items: center; justify-content: center; overflow: hidden;
+    position: relative;
+  }
+  /* photo placeholder UI inside the circle */
+  .member-avatar .photo-placeholder {
+    display: flex; flex-direction: column; align-items: center; gap: 4px;
+    color: #bba898; font-size: 11px; font-weight: 500;
+    font-family: 'DM Sans', sans-serif; text-align: center; line-height: 1.3;
+  }
+  .member-avatar .photo-placeholder svg { opacity: .5; }
+  .member-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; display: block; }
+
+  /* Playfair + dark red for member names */
+  .member-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem; font-weight: 700;
+    color: var(--red);
+    line-height: 1.25; margin-bottom: 10px; letter-spacing: -.1px;
+  }
+  .member-desc {
+    font-size: 12.5px; color: #7a5c48; line-height: 1.6;
+    margin-bottom: 14px; font-style: italic; font-weight: 300; flex: 1;
+  }
+  .member-role {
+    font-size: 10.5px; font-weight: 700; color: var(--red);
+    text-transform: uppercase; letter-spacing: 1.8px;
+    background: rgba(192,57,43,.09); padding: 5px 14px; border-radius: 100px;
+  }
+
+  /* ───── ABOUT — bg warm-alt ───── */
+  .about-section { background: var(--warm-alt); padding: var(--sec-pad); }
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+  .section-desc { font-size: 16px; color: var(--mid); line-height: 1.85; font-weight: 300; margin-bottom: 18px; }
+  .about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 32px; }
+  .stat-box { background: #fff; border-radius: 16px; padding: 20px; border: 1px solid var(--border); }
+  .stat-num { font-family: 'Playfair Display', serif; font-size: 36px; font-weight: 900; color: var(--red); line-height: 1; }
+  .stat-label { font-size: 11px; color: var(--mid); margin-top: 6px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; }
+
+  .gis-diagram {
+    width: 100%; aspect-ratio: 1; max-width: 420px; margin: 0 auto;
+    background: var(--dark); border-radius: 24px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 32px; gap: 14px;
+    box-shadow: 0 24px 70px rgba(26,18,9,.18);
+  }
+  .diagram-row { display: flex; gap: 12px; width: 100%; }
+  .diagram-chip {
+    flex: 1; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1);
+    border-radius: 12px; padding: 14px 10px; text-align: center;
+    font-size: 11px; color: rgba(255,255,255,.7); font-weight: 500;
+  }
+  .diagram-chip.hot { background: rgba(192,57,43,.35); border-color: var(--red); color: #fff; }
+  .chip-icon { font-size: 20px; margin-bottom: 5px; display: block; }
+  .diagram-center {
+    background: linear-gradient(135deg, var(--red), var(--orange));
+    border-radius: 14px; padding: 16px 20px;
+    font-family: 'Playfair Display', serif; font-size: 20px; color: #fff; font-weight: 700;
+    text-align: center; width: 100%;
+  }
+
+  /* ───── MAP SECTIONS — alternating, no dividers ───── */
+  .map-section-1 { background: var(--cream);    padding: var(--sec-pad); }
+  .map-section-2 { background: var(--warm-alt); padding: var(--sec-pad); }
+  .map-section-3 { background: var(--cream);    padding: var(--sec-pad); }
+  .map-section-4 { background: var(--warm-alt); padding: var(--sec-pad); }
+
+  .map-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 70px; align-items: center; }
+  .map-inner.reverse { direction: rtl; }
+  .map-inner.reverse > * { direction: ltr; }
+
+  .map-number {
+    font-family: 'Playfair Display', serif; font-size: 90px; font-weight: 900;
+    color: var(--border); line-height: 1; margin-bottom: -16px; display: block;
+  }
+  .map-tag {
+    display: inline-block; background: var(--red); color: #fff;
+    font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+    padding: 5px 14px; border-radius: 100px; margin-bottom: 14px; font-weight: 600;
+  }
+  .map-title {
+    font-family: 'Playfair Display', serif; font-size: clamp(24px, 3.5vw, 36px);
+    font-weight: 700; color: var(--dark); line-height: 1.2; margin-bottom: 16px;
+  }
+  .map-desc { font-size: 15px; line-height: 1.85; color: var(--mid); font-weight: 300; margin-bottom: 26px; }
+  .map-highlights { display: flex; flex-wrap: wrap; gap: 8px; }
+  .highlight-chip {
+    background: rgba(192,57,43,.07); border: 1px solid rgba(192,57,43,.18);
+    color: var(--red); font-size: 12px; padding: 6px 14px; border-radius: 100px; font-weight: 500;
+  }
+  .map-frame {
+    position: relative; border-radius: 20px; overflow: hidden; aspect-ratio: 4/3;
+    background: #e8e3dc; border: 1px solid var(--border);
+    box-shadow: 0 16px 50px rgba(26,18,9,.11);
+    display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 12px;
+  }
+  .map-frame img { width: 100%; height: 100%; object-fit: cover; }
+  .map-placeholder-icon { font-size: 52px; opacity: .35; }
+  .map-placeholder-text { font-size: 13px; color: #aaa; font-weight: 500; text-align: center; padding: 0 20px; }
+  .map-frame-label {
+    position: absolute; bottom: 14px; left: 14px;
+    background: rgba(26,18,9,.72); backdrop-filter: blur(8px);
+    color: #fff; font-size: 11px; padding: 5px 14px; border-radius: 100px;
+    font-weight: 500; letter-spacing: .5px;
+  }
+
+  /* ───── KESIMPULAN ───── */
+  .kesimpulan-section {
+    background: var(--cream);
+    padding: var(--sec-pad);
+  }
+  .kesimpulan-header {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto 60px;
+  }
+  .kesimpulan-header .section-label { color: var(--red); }
+  .kesimpulan-header .section-title { color: var(--dark); }
+  .kesimpulan-header .section-title em { color: var(--red); }
+  .kesimpulan-intro {
+    font-size: 16px; color: var(--mid);
+    line-height: 1.85; font-weight: 300;
+  }
+
+  .manfaat-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 56px;
+  }
+  .manfaat-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 28px 24px;
+    box-shadow: 0 4px 18px rgba(0,0,0,.05);
+    transition: box-shadow .3s, transform .25s, border-color .3s;
+  }
+  .manfaat-card:hover {
+    box-shadow: 0 12px 36px rgba(0,0,0,.1);
+    border-color: rgba(192,57,43,.3);
+    transform: translateY(-5px);
+  }
+  .manfaat-icon-wrap {
+    width: 52px; height: 52px; border-radius: 14px;
+    background: rgba(192,57,43,.08);
+    border: 1px solid rgba(192,57,43,.15);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--red);
+    margin-bottom: 18px;
+  }
+  .manfaat-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px; font-weight: 700;
+    color: var(--dark); margin-bottom: 12px; line-height: 1.3;
+  }
+  .manfaat-desc {
+    font-size: 13.5px; color: var(--mid);
+    line-height: 1.75; font-weight: 300;
+  }
+
+  .kesimpulan-penutup {
+    max-width: 720px; margin: 0 auto;
+    text-align: center;
+    border-top: 1px solid var(--border);
+    padding-top: 40px;
+  }
+  .kesimpulan-penutup p {
+    font-size: 16px; color: var(--mid);
+    line-height: 1.9; font-style: italic; font-weight: 300;
+  }
+
+  /* ───── FOOTER ───── */
+  footer { background: var(--dark); padding: 60px 24px; text-align: center; }
+  .footer-logo { font-family: 'Playfair Display', serif; font-size: 36px; font-weight: 900; color: #fff; margin-bottom: 10px; }
+  .footer-logo span { color: var(--orange); }
+  .footer-sub { font-size: 13px; color: rgba(255,255,255,.4); margin-bottom: 28px; }
+  .footer-line { width: 100%; height: 1px; background: rgba(255,255,255,.08); margin-bottom: 22px; }
+  .footer-copy { font-size: 12px; color: rgba(255,255,255,.3); line-height: 1.9; }
+
+  /* ───── ANIMATIONS ───── */
+  @keyframes fadeDown { from { opacity:0; transform:translateY(-20px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0);} 50%{transform:translateX(-50%) translateY(8px);} }
+  .reveal { opacity:0; transform:translateY(36px); transition:opacity .7s ease,transform .7s ease; }
+  .reveal.visible { opacity:1; transform:translateY(0); }
+
+  /* ───── RESPONSIVE ───── */
+  @media (max-width: 700px) {
+    .members-grid { grid-template-columns: repeat(2, 1fr); }
+    .about-grid, .map-inner { grid-template-columns: 1fr; gap: 48px; }
+    .map-inner.reverse { direction: ltr; }
+    .manfaat-grid { grid-template-columns: 1fr; }
+    :root { --sec-pad: 70px 24px; }
+  }
+  @media (max-width: 480px) { .members-grid { grid-template-columns: 1fr; max-width: 320px; margin: 0 auto; } }
+</style>
 </head>
 <body>
-  <h1>Hello, world!</h1>
-  <button onclick="console.log('hello');">Press me</button>
-  <script defer type="text/javascript" src="/main.js"></script>
+
+<!-- HERO -->
+<section id="hero">
+  <span class="hero-badge">GIS for Business · Kelompok 1</span>
+  <h1 class="hero-title">I Am<br><span>Geprek</span></h1>
+  <p class="hero-sub">Analisis Geospasial untuk Strategi Bisnis Ayam Geprek — Pemetaan Pasar, Kompetitor, Aksesibilitas & Keramaian Wilayah.</p>
+  <div class="scroll-hint">Scroll</div>
+</section>
+<div class="hero-divider"></div>
+
+<!-- TEAM — cream -->
+<section class="team-section">
+  <div class="container-inner">
+    <div class="team-header reveal">
+      <h2 class="section-title">Meet Our Team</h2>
+      <p class="team-subhead">Kelompok 1 · GIS for Business · I Am Geprek</p>
+    </div>
+    <div class="members-grid">
+
+      <!-- Baris 1 -->
+      <div class="member-card reveal">
+        <div class="member-avatar-wrap">
+          <div class="member-avatar">
+            <!-- Ganti dengan: <img src="foto_anugrah.jpg" alt="Anugrah Rusli"> -->
+            <div class="photo-placeholder">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#bba898" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+              Foto
+            </div>
+          </div>
+        </div>
+        <div class="member-name">Anugrah Rusli</div>
+        <div class="member-desc">Anggota aktif dalam analisis dan pemetaan data geospasial bisnis I Am Geprek.</div>
+        <div class="member-role">Anggota</div>
+      </div>
+
+      <div class="member-card reveal">
+        <div class="member-avatar-wrap">
+          <div class="member-avatar">
+            <!-- Ganti dengan: <img src="foto_azmi.jpg" alt="Azmi Nadhifah"> -->
+            <div class="photo-placeholder">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#bba898" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+              Foto
+            </div>
+          </div>
+        </div>
+        <div class="member-name">Azmi Nadhifah Khalishah</div>
+        <div class="member-desc">Berkontribusi dalam pengolahan data dan visualisasi peta analisis pasar.</div>
+        <div class="member-role">Anggota</div>
+      </div>
+
+      <div class="member-card reveal">
+        <div class="member-avatar-wrap">
+          <div class="member-avatar">
+            <!-- Ganti dengan: <img src="foto_fakhira.jpg" alt="Fakhira Az Zahira Andi Yusri"> -->
+            <div class="photo-placeholder">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#bba898" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+              Foto
+            </div>
+          </div>
+        </div>
+        <div class="member-name">Fakhira Az Zahira Andi Yusri</div>
+        <div class="member-desc">Berperan dalam pemetaan kompetitor dan analisis aksesibilitas wilayah.</div>
+        <div class="member-role">Anggota</div>
+      </div>
+
+      <!-- Baris 2 -->
+      <div class="member-card reveal">
+        <div class="member-avatar-wrap">
+          <div class="member-avatar">
+            <!-- Ganti dengan: <img src="foto_andi.jpg" alt="Ummul Radiatul Jannah"> -->
+            <div class="photo-placeholder">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#bba898" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+              Foto
+            </div>
+          </div>
+        </div>
+        <div class="member-name">Ummul Radiatul Jannah</div>
+        <div class="member-desc">Membantu proses pengumpulan data spasial dan interpretasi hasil peta GIS.</div>
+        <div class="member-role">Anggota</div>
+      </div>
+
+      <div class="member-card reveal">
+        <div class="member-avatar-wrap">
+          <div class="member-avatar">
+            <!-- Ganti dengan: <img src="foto_ummul.jpg" alt="Angel Firdausi"> -->
+            <div class="photo-placeholder">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#bba898" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+              Foto
+            </div>
+          </div>
+        </div>
+        <div class="member-name">Angel Firdausi</div>
+        <div class="member-desc">Terlibat dalam analisis keramaian fasilitas pendidikan dan segmentasi pasar.</div>
+        <div class="member-role">Anggota</div>
+      </div>
+
+      <div class="member-card reveal">
+        <div class="member-avatar-wrap">
+          <div class="member-avatar">
+            <!-- Ganti dengan: <img src="foto_angel.jpg" alt="Muh Rifki"> -->
+            <div class="photo-placeholder">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#bba898" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+              Foto
+            </div>
+          </div>
+        </div>
+        <div class="member-name">Muh Rifki</div>
+        <div class="member-desc">Berkontribusi dalam penyusunan laporan dan desain visualisasi data geospasial.</div>
+        <div class="member-role">Anggota</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT — warm-alt -->
+<section class="about-section">
+  <div class="container-inner">
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <div class="section-label">Tentang Proyek</div>
+        <h2 class="section-title">Apa itu <em>GIS for Business?</em></h2>
+        <p class="section-desc"><strong>Geographic Information System (GIS)</strong> adalah sistem yang dirancang untuk menangkap, menyimpan, memanipulasi, menganalisis, mengelola, dan menyajikan semua jenis data geografis.</p>
+        <p class="section-desc">Dalam konteks bisnis, GIS dimanfaatkan untuk pengambilan keputusan berbasis lokasi — mulai dari analisis pasar, pemetaan kompetitor, hingga pemilihan lokasi strategis berdasarkan data spasial yang akurat.</p>
+        <p class="section-desc">Proyek ini mengaplikasikan GIS pada bisnis <strong>I Am Geprek</strong>, menghasilkan 4 peta analitik yang mendukung keputusan ekspansi dan strategi pemasaran berbasis data geospasial.</p>
+        <div class="about-stats">
+          <div class="stat-box"><div class="stat-num">4</div><div class="stat-label">Peta Analisis</div></div>
+          <div class="stat-box"><div class="stat-num">1</div><div class="stat-label">Bisnis Fokus</div></div>
+          <div class="stat-box"><div class="stat-num">GIS</div><div class="stat-label">Metode Utama</div></div>
+          <div class="stat-box"><div class="stat-num">6</div><div class="stat-label">Anggota Tim</div></div>
+        </div>
+      </div>
+      <div class="reveal">
+        <div class="gis-diagram">
+          <div class="diagram-center">🗺 I Am Geprek GIS</div>
+          <div class="diagram-row">
+            <div class="diagram-chip hot"><span class="chip-icon">📊</span>Segmentasi Pasar</div>
+            <div class="diagram-chip hot"><span class="chip-icon">🏪</span>Kompetitor</div>
+          </div>
+          <div class="diagram-row">
+            <div class="diagram-chip hot"><span class="chip-icon">📍</span>Aksesibilitas</div>
+            <div class="diagram-chip hot"><span class="chip-icon">🎓</span>Keramaian</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PETA 1 — cream -->
+<section class="map-section-1">
+  <div class="container-inner">
+    <div class="map-inner">
+      <div class="reveal">
+        <span class="map-number">01</span>
+        <span class="map-tag">Analisis Data</span>
+        <h2 class="map-title">Peta Segmentasi<br>Potensi Pasar</h2>
+        <p class="map-desc">Peta ini menampilkan hasil analisis segmentasi wilayah berdasarkan potensi pasar bagi bisnis ayam geprek. Dengan membagi wilayah ke dalam segmen berdasarkan kepadatan penduduk, demografi konsumen, dan daya beli, peta ini membantu mengidentifikasi zona prioritas untuk pengembangan outlet I Am Geprek.</p>
+        <div class="map-highlights">
+          <span class="highlight-chip">Kepadatan Penduduk</span>
+          <span class="highlight-chip">Daya Beli</span>
+          <span class="highlight-chip">Segmen Konsumen</span>
+          <span class="highlight-chip">Zona Prioritas</span>
+        </div>
+      </div>
+      <div class="reveal">
+        <div class="map-frame">
+          <!-- <img src="peta1_segmentasi.png" alt="Peta Segmentasi Pasar"> -->
+          <div class="map-placeholder-icon">🗺</div>
+          <div class="map-placeholder-text">Masukkan foto Peta Segmentasi Potensi Pasar di sini</div>
+          <div class="map-frame-label">Peta 1 · Segmentasi Pasar</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PETA 2 — warm-alt -->
+<section class="map-section-2">
+  <div class="container-inner">
+    <div class="map-inner reverse">
+      <div class="reveal">
+        <span class="map-number">02</span>
+        <span class="map-tag">Analisis Data</span>
+        <h2 class="map-title">Peta Analisis<br>Potensi Kompetitor</h2>
+        <p class="map-desc">Peta analisis kompetitor memetakan sebaran restoran atau gerai ayam sejenis di sekitar wilayah target. Visualisasi ini memperlihatkan konsentrasi persaingan, jarak antar kompetitor, serta area yang masih memiliki celah pasar yang dapat dimanfaatkan I Am Geprek.</p>
+        <div class="map-highlights">
+          <span class="highlight-chip">Sebaran Kompetitor</span>
+          <span class="highlight-chip">Jarak Antar Gerai</span>
+          <span class="highlight-chip">Celah Pasar</span>
+          <span class="highlight-chip">Tingkat Persaingan</span>
+        </div>
+      </div>
+      <div class="reveal">
+        <div class="map-frame">
+          <!-- <img src="peta2_kompetitor.png" alt="Peta Kompetitor"> -->
+          <div class="map-placeholder-icon">🏪</div>
+          <div class="map-placeholder-text">Masukkan foto Peta Analisis Potensi Kompetitor di sini</div>
+          <div class="map-frame-label">Peta 2 · Kompetitor</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PETA 3 — cream -->
+<section class="map-section-3">
+  <div class="container-inner">
+    <div class="map-inner">
+      <div class="reveal">
+        <span class="map-number">03</span>
+        <span class="map-tag">Analisis Data · Buffer</span>
+        <h2 class="map-title">Peta Aksesibilitas<br>Metode Buffer</h2>
+        <p class="map-desc">Menggunakan metode analisis buffer, peta ini menggambarkan jangkauan akses dari lokasi potensial I Am Geprek dalam radius tertentu. Metode buffer membantu menentukan area layanan, menilai kemudahan konsumen menjangkau gerai, serta mengidentifikasi infrastruktur pendukung seperti jalan utama dan transportasi umum.</p>
+        <div class="map-highlights">
+          <span class="highlight-chip">Analisis Buffer</span>
+          <span class="highlight-chip">Jangkauan Akses</span>
+          <span class="highlight-chip">Infrastruktur Jalan</span>
+          <span class="highlight-chip">Radius Layanan</span>
+        </div>
+      </div>
+      <div class="reveal">
+        <div class="map-frame">
+          <!-- <img src="peta3_buffer.png" alt="Peta Aksesibilitas Buffer"> -->
+          <div class="map-placeholder-icon">📍</div>
+          <div class="map-placeholder-text">Masukkan foto Peta Aksesibilitas (Buffer) di sini</div>
+          <div class="map-frame-label">Peta 3 · Aksesibilitas Buffer</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PETA 4 — warm-alt -->
+<section class="map-section-4">
+  <div class="container-inner">
+    <div class="map-inner reverse">
+      <div class="reveal">
+        <span class="map-number">04</span>
+        <span class="map-tag">Analisis Data</span>
+        <h2 class="map-title">Peta Keramaian<br>Fasilitas Pendidikan</h2>
+        <p class="map-desc">Peta ini memetakan kepadatan fasilitas pendidikan (sekolah, kampus, lembaga kursus) di sekitar lokasi potensial bisnis. Kawasan dengan konsentrasi tinggi fasilitas pendidikan mencerminkan potensi konsumen yang besar — terutama pelajar dan mahasiswa sebagai target pasar utama I Am Geprek.</p>
+        <div class="map-highlights">
+          <span class="highlight-chip">Kepadatan Kampus</span>
+          <span class="highlight-chip">Sekolah & Kursus</span>
+          <span class="highlight-chip">Segmen Pelajar</span>
+          <span class="highlight-chip">Zona Ramai</span>
+        </div>
+      </div>
+      <div class="reveal">
+        <div class="map-frame">
+          <!-- <img src="peta4_pendidikan.png" alt="Peta Keramaian Fasilitas Pendidikan"> -->
+          <div class="map-placeholder-icon">🎓</div>
+          <div class="map-placeholder-text">Masukkan foto Peta Keramaian Fasilitas Pendidikan di sini</div>
+          <div class="map-frame-label">Peta 4 · Fasilitas Pendidikan</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- KESIMPULAN — cream -->
+<section class="kesimpulan-section">
+  <div class="container-inner">
+    <div class="reveal kesimpulan-header">
+      <div class="section-label">Kesimpulan</div>
+      <h2 class="section-title">Manfaat <em>Pemetaan GIS</em><br>untuk Bisnis</h2>
+      <p class="kesimpulan-intro">Secara keseluruhan, penerapan GIS dalam bisnis I Am Geprek memberikan gambaran yang lebih jelas dan berbasis data dalam pengambilan keputusan strategis — mulai dari pemilihan lokasi hingga pemahaman terhadap pasar dan persaingan.</p>
+    </div>
+
+    <div class="manfaat-grid reveal">
+
+      <div class="manfaat-card">
+        <div class="manfaat-icon-wrap">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+        </div>
+        <h3 class="manfaat-title">Pengambilan Keputusan Lebih Tepat</h3>
+        <p class="manfaat-desc">Data spasial memungkinkan pemilik bisnis menentukan lokasi gerai berdasarkan fakta lapangan, bukan sekadar intuisi. Keputusan menjadi lebih terukur dan berisiko lebih rendah.</p>
+      </div>
+
+      <div class="manfaat-card">
+        <div class="manfaat-icon-wrap">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <h3 class="manfaat-title">Memahami Pasar & Konsumen</h3>
+        <p class="manfaat-desc">Segmentasi wilayah berdasarkan demografi dan daya beli membantu bisnis memahami siapa target konsumennya dan di mana mereka berada, sehingga strategi pemasaran bisa lebih terarah.</p>
+      </div>
+
+      <div class="manfaat-card">
+        <div class="manfaat-icon-wrap">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <h3 class="manfaat-title">Memetakan Persaingan</h3>
+        <p class="manfaat-desc">Dengan mengetahui sebaran kompetitor, bisnis dapat mengidentifikasi zona yang sudah jenuh dan menemukan celah pasar yang masih terbuka untuk ekspansi yang lebih cerdas.</p>
+      </div>
+
+      <div class="manfaat-card">
+        <div class="manfaat-icon-wrap">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg>
+        </div>
+        <h3 class="manfaat-title">Optimasi Aksesibilitas Lokasi</h3>
+        <p class="manfaat-desc">Analisis buffer memastikan lokasi yang dipilih mudah dijangkau konsumen dari berbagai arah. Hal ini berdampak langsung pada kenyamanan pelanggan dan potensi kunjungan yang lebih tinggi.</p>
+      </div>
+
+      <div class="manfaat-card">
+        <div class="manfaat-icon-wrap">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </div>
+        <h3 class="manfaat-title">Memanfaatkan Zona Ramai</h3>
+        <p class="manfaat-desc">Pemetaan keramaian di sekitar fasilitas pendidikan membantu bisnis menargetkan kawasan dengan lalu lintas konsumen tinggi, terutama segmen pelajar dan mahasiswa yang menjadi pasar potensial ayam geprek.</p>
+      </div>
+
+      <div class="manfaat-card">
+        <div class="manfaat-icon-wrap">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        </div>
+        <h3 class="manfaat-title">Efisiensi Sumber Daya</h3>
+        <p class="manfaat-desc">Dengan visualisasi data yang komprehensif, pemilik bisnis tidak perlu menghabiskan waktu dan biaya besar untuk survei manual. GIS merangkum informasi kompleks menjadi gambaran yang mudah dipahami dan ditindaklanjuti.</p>
+      </div>
+
+    </div>
+
+    <div class="reveal kesimpulan-penutup">
+      <p>Penerapan GIS bukan hanya untuk perusahaan besar — bagi bisnis kuliner seperti I Am Geprek, pemetaan ini menjadi keunggulan kompetitif yang nyata dalam memilih lokasi, memahami pasar, dan merancang strategi pertumbuhan yang berkelanjutan.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">I Am <span>Geprek</span></div>
+  <div class="footer-sub">GIS for Business · Kelompok 1</div>
+  <div class="footer-line"></div>
+  <div class="footer-copy">
+    Anugrah Rusli · Azmi Nadhifah Khalishah · Fakhira Az Zahira <br>
+    Ummul Radiatul Jannah · Angel Firdausi · Muh Rifki
+  </div>
+</footer>
+
+<script>
+  const reveals = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(r => io.observe(r));
+</script>
 </body>
 </html>
