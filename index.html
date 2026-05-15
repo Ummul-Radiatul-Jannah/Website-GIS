@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<title>GIS for Business – I Am Geprek | Analisis Spasial</title>
+<title>GIS for Business – IAm Geprek | Analisis Spasial</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -62,7 +62,6 @@
   }
   .scroll-hint::after { content: ''; width: 1px; height: 36px; background: rgba(255,255,255,.3); }
 
-  /* only one divider — under hero */
   .hero-divider {
     width: 100%; height: 5px;
     background: linear-gradient(90deg, var(--red), var(--orange), var(--gold), var(--orange), var(--red));
@@ -80,7 +79,7 @@
   }
   .section-title em { font-style: italic; color: var(--red); }
 
-  /* ───── TEAM — bg cream ───── */
+  /* ───── TEAM — cream ───── */
   .team-section { background: var(--cream); padding: var(--sec-pad); }
   .team-header { text-align: center; margin-bottom: 52px; }
   .team-header .section-title { color: var(--red); margin-bottom: 8px; }
@@ -112,7 +111,6 @@
     display: flex; align-items: center; justify-content: center; overflow: hidden;
     position: relative;
   }
-  /* photo placeholder UI inside the circle */
   .member-avatar .photo-placeholder {
     display: flex; flex-direction: column; align-items: center; gap: 4px;
     color: #bba898; font-size: 11px; font-weight: 500;
@@ -121,7 +119,6 @@
   .member-avatar .photo-placeholder svg { opacity: .5; }
   .member-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; display: block; }
 
-  /* Playfair + dark red for member names */
   .member-name {
     font-family: 'Playfair Display', serif;
     font-size: 1.05rem; font-weight: 700;
@@ -138,7 +135,7 @@
     background: rgba(192,57,43,.09); padding: 5px 14px; border-radius: 100px;
   }
 
-  /* ───── ABOUT — bg warm-alt ───── */
+  /* ───── ABOUT — warm-alt ───── */
   .about-section { background: var(--warm-alt); padding: var(--sec-pad); }
   .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
   .section-desc { font-size: 16px; color: var(--mid); line-height: 1.85; font-weight: 300; margin-bottom: 18px; }
@@ -169,11 +166,60 @@
     text-align: center; width: 100%;
   }
 
-  /* ───── MAP SECTIONS — alternating, no dividers ───── */
-  .map-section-1 { background: var(--cream);    padding: var(--sec-pad); }
-  .map-section-2 { background: var(--warm-alt); padding: var(--sec-pad); }
-  .map-section-3 { background: var(--cream);    padding: var(--sec-pad); }
-  .map-section-4 { background: var(--warm-alt); padding: var(--sec-pad); }
+  /* ───── IAM GEPREK SECTION — cream ───── */
+  .iamgeprek-section { background: var(--cream); padding: var(--sec-pad); }
+
+  .iamgeprek-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 70px;
+    align-items: center;
+  }
+
+  /* Gambar di kiri: pakai direction:rtl trick sama seperti map-inner.reverse */
+  .iamgeprek-grid.reverse { direction: rtl; }
+  .iamgeprek-grid.reverse > * { direction: ltr; }
+
+  .iamgeprek-image-frame {
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    background: #e8e3dc;
+    border: 1px solid var(--border);
+    box-shadow: 0 16px 50px rgba(26,18,9,.11);
+  }
+  .iamgeprek-image-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .image-caption {
+    position: absolute;
+    bottom: 14px;
+    left: 14px;
+    background: rgba(26,18,9,.72);
+    backdrop-filter: blur(8px);
+    color: #fff;
+    font-size: 11px;
+    padding: 5px 14px;
+    border-radius: 100px;
+    font-weight: 500;
+    letter-spacing: .5px;
+  }
+
+  /* Teks section IAm Geprek: rata tengah */
+  .iamgeprek-text { text-align: center; }
+  .iamgeprek-text .section-label { text-align: center; }
+  .iamgeprek-text .section-title { text-align: center; }
+  .iamgeprek-text .section-desc { text-align: center; }
+
+  /* ───── MAP SECTIONS — alternating setelah iamgeprek ───── */
+  /* Urutan: iamgeprek=cream → peta1=warm-alt → peta2=cream → peta3=warm-alt → peta4=cream */
+  .map-section-1 { background: var(--warm-alt); padding: var(--sec-pad); }
+  .map-section-2 { background: var(--cream);    padding: var(--sec-pad); }
+  .map-section-3 { background: var(--warm-alt); padding: var(--sec-pad); }
+  .map-section-4 { background: var(--cream);    padding: var(--sec-pad); }
 
   .map-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 70px; align-items: center; }
   .map-inner.reverse { direction: rtl; }
@@ -214,71 +260,37 @@
     font-weight: 500; letter-spacing: .5px;
   }
 
-  /* ───── KESIMPULAN ───── */
-  .kesimpulan-section {
-    background: var(--cream);
-    padding: var(--sec-pad);
-  }
-  .kesimpulan-header {
-    text-align: center;
-    max-width: 700px;
-    margin: 0 auto 60px;
-  }
+  /* ───── KESIMPULAN — warm-alt (selang-seling dari peta4=cream) ───── */
+  .kesimpulan-section { background: var(--warm-alt); padding: var(--sec-pad); }
+  .kesimpulan-header { text-align: center; max-width: 700px; margin: 0 auto 60px; }
   .kesimpulan-header .section-label { color: var(--red); }
   .kesimpulan-header .section-title { color: var(--dark); }
   .kesimpulan-header .section-title em { color: var(--red); }
-  .kesimpulan-intro {
-    font-size: 16px; color: var(--mid);
-    line-height: 1.85; font-weight: 300;
-  }
+  .kesimpulan-intro { font-size: 16px; color: var(--mid); line-height: 1.85; font-weight: 300; }
 
-  .manfaat-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    margin-bottom: 56px;
-  }
+  .manfaat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 56px; }
   .manfaat-card {
-    background: #fff;
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 28px 24px;
+    background: #fff; border: 1px solid var(--border); border-radius: 20px; padding: 28px 24px;
     box-shadow: 0 4px 18px rgba(0,0,0,.05);
     transition: box-shadow .3s, transform .25s, border-color .3s;
   }
   .manfaat-card:hover {
-    box-shadow: 0 12px 36px rgba(0,0,0,.1);
-    border-color: rgba(192,57,43,.3);
-    transform: translateY(-5px);
+    box-shadow: 0 12px 36px rgba(0,0,0,.1); border-color: rgba(192,57,43,.3); transform: translateY(-5px);
   }
   .manfaat-icon-wrap {
     width: 52px; height: 52px; border-radius: 14px;
-    background: rgba(192,57,43,.08);
-    border: 1px solid rgba(192,57,43,.15);
+    background: rgba(192,57,43,.08); border: 1px solid rgba(192,57,43,.15);
     display: flex; align-items: center; justify-content: center;
-    color: var(--red);
-    margin-bottom: 18px;
+    color: var(--red); margin-bottom: 18px;
   }
-  .manfaat-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 17px; font-weight: 700;
-    color: var(--dark); margin-bottom: 12px; line-height: 1.3;
-  }
-  .manfaat-desc {
-    font-size: 13.5px; color: var(--mid);
-    line-height: 1.75; font-weight: 300;
-  }
+  .manfaat-title { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 700; color: var(--dark); margin-bottom: 12px; line-height: 1.3; }
+  .manfaat-desc { font-size: 13.5px; color: var(--mid); line-height: 1.75; font-weight: 300; }
 
   .kesimpulan-penutup {
-    max-width: 720px; margin: 0 auto;
-    text-align: center;
-    border-top: 1px solid var(--border);
-    padding-top: 40px;
+    max-width: 720px; margin: 0 auto; text-align: center;
+    border-top: 1px solid var(--border); padding-top: 40px;
   }
-  .kesimpulan-penutup p {
-    font-size: 16px; color: var(--mid);
-    line-height: 1.9; font-style: italic; font-weight: 300;
-  }
+  .kesimpulan-penutup p { font-size: 16px; color: var(--mid); line-height: 1.9; font-style: italic; font-weight: 300; }
 
   /* ───── FOOTER ───── */
   footer { background: var(--dark); padding: 60px 24px; text-align: center; }
@@ -297,8 +309,8 @@
   /* ───── RESPONSIVE ───── */
   @media (max-width: 700px) {
     .members-grid { grid-template-columns: repeat(2, 1fr); }
-    .about-grid, .map-inner { grid-template-columns: 1fr; gap: 48px; }
-    .map-inner.reverse { direction: ltr; }
+    .about-grid, .map-inner, .iamgeprek-grid { grid-template-columns: 1fr; gap: 48px; }
+    .map-inner.reverse, .iamgeprek-grid.reverse { direction: ltr; }
     .manfaat-grid { grid-template-columns: 1fr; }
     :root { --sec-pad: 70px 24px; }
   }
@@ -310,8 +322,9 @@
 <!-- HERO -->
 <section id="hero">
   <span class="hero-badge">GIS for Business · Kelompok 1</span>
-  <h1 class="hero-title">I Am<br><span>Geprek</span></h1>
-  <p class="hero-sub">Analisis Geospasial untuk Strategi Bisnis Ayam Geprek — Pemetaan Pasar, Kompetitor, Aksesibilitas & Keramaian Wilayah.</p>
+  <h1 class="hero-title">IAm<br><span>Geprek</span></h1>
+  <p class="hero-sub">Analisis Geospasial untuk Strategi Bisnis Ayam Geprek <br>  
+    Pemetaan Pasar, Kompetitor, Aksesibilitas &amp; Keramaian Wilayah.</p>
   <div class="scroll-hint">Scroll</div>
 </section>
 <div class="hero-divider"></div>
@@ -321,19 +334,14 @@
   <div class="container-inner">
     <div class="team-header reveal">
       <h2 class="section-title">Meet Our Team</h2>
-      <p class="team-subhead">Kelompok 1 · GIS for Business · I Am Geprek</p>
+      <p class="team-subhead">Kelompok 1 · GIS for Business · IAm Geprek</p>
     </div>
     <div class="members-grid">
 
-      <!-- Baris 1 -->
       <div class="member-card reveal">
         <div class="member-avatar-wrap">
           <div class="member-avatar">
-            <!-- Ganti dengan: <img src="foto_anugrah.jpg" alt="Anugrah Rusli"> -->
-            <div class="photo-placeholder">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#bba898" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-              Foto
-            </div>
+            <img src="assets/images/foto_anugrah2.jpeg" alt="Foto Anugrah Rusli">
           </div>
         </div>
         <div class="member-name">Anugrah Rusli</div>
@@ -344,11 +352,7 @@
       <div class="member-card reveal">
         <div class="member-avatar-wrap">
           <div class="member-avatar">
-            <!-- Ganti dengan: <img src="foto_azmi.jpg" alt="Azmi Nadhifah"> -->
-            <div class="photo-placeholder">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#bba898" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-              Foto
-            </div>
+            <img src="assets/images/foto_azmi.jpeg" alt="Foto Azmi Nadhifah">
           </div>
         </div>
         <div class="member-name">Azmi Nadhifah Khalishah</div>
@@ -359,11 +363,7 @@
       <div class="member-card reveal">
         <div class="member-avatar-wrap">
           <div class="member-avatar">
-            <!-- Ganti dengan: <img src="foto_fakhira.jpg" alt="Fakhira Az Zahira Andi Yusri"> -->
-            <div class="photo-placeholder">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#bba898" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-              Foto
-            </div>
+            <img src="assets/images/foto_zahira.jpeg" alt="Foto Fakhira">
           </div>
         </div>
         <div class="member-name">Fakhira Az Zahira Andi Yusri</div>
@@ -371,15 +371,10 @@
         <div class="member-role">Anggota</div>
       </div>
 
-      <!-- Baris 2 -->
       <div class="member-card reveal">
         <div class="member-avatar-wrap">
           <div class="member-avatar">
-            <!-- Ganti dengan: <img src="foto_andi.jpg" alt="Ummul Radiatul Jannah"> -->
-            <div class="photo-placeholder">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#bba898" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-              Foto
-            </div>
+            <img src="assets/images/foto_ummul.jpeg" alt="Foto Ummul Radiatul Jannah">
           </div>
         </div>
         <div class="member-name">Ummul Radiatul Jannah</div>
@@ -390,11 +385,7 @@
       <div class="member-card reveal">
         <div class="member-avatar-wrap">
           <div class="member-avatar">
-            <!-- Ganti dengan: <img src="foto_ummul.jpg" alt="Angel Firdausi"> -->
-            <div class="photo-placeholder">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#bba898" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-              Foto
-            </div>
+            <img src="assets/images/foto_angel.jpeg" alt="Foto Angel Firdausi">
           </div>
         </div>
         <div class="member-name">Angel Firdausi</div>
@@ -405,11 +396,7 @@
       <div class="member-card reveal">
         <div class="member-avatar-wrap">
           <div class="member-avatar">
-            <!-- Ganti dengan: <img src="foto_angel.jpg" alt="Muh Rifki"> -->
-            <div class="photo-placeholder">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#bba898" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-              Foto
-            </div>
+            <img src="assets/images/foto_rifki.jpeg" alt="Foto Muh Rifki">
           </div>
         </div>
         <div class="member-name">Muh Rifki</div>
@@ -429,8 +416,8 @@
         <div class="section-label">Tentang Proyek</div>
         <h2 class="section-title">Apa itu <em>GIS for Business?</em></h2>
         <p class="section-desc"><strong>Geographic Information System (GIS)</strong> adalah sistem yang dirancang untuk menangkap, menyimpan, memanipulasi, menganalisis, mengelola, dan menyajikan semua jenis data geografis.</p>
-        <p class="section-desc">Dalam konteks bisnis, GIS dimanfaatkan untuk pengambilan keputusan berbasis lokasi,  mulai dari analisis pasar, pemetaan kompetitor, hingga pemilihan lokasi strategis berdasarkan data spasial yang akurat.</p>
-        <p class="section-desc">Proyek ini mengaplikasikan GIS pada bisnis <strong>I Am Geprek</strong>, menghasilkan 4 peta analitik yang mendukung keputusan ekspansi dan strategi pemasaran berbasis data geospasial.</p>
+        <p class="section-desc">Dalam konteks bisnis, GIS dimanfaatkan untuk pengambilan keputusan berbasis lokasi, mulai dari analisis pasar, pemetaan kompetitor, hingga pemilihan lokasi strategis berdasarkan data spasial yang akurat.</p>
+        <p class="section-desc">Proyek ini mengaplikasikan GIS pada bisnis <strong>IAm Geprek</strong>, menghasilkan 4 peta analitik yang mendukung keputusan ekspansi dan strategi pemasaran berbasis data geospasial.</p>
         <div class="about-stats">
           <div class="stat-box"><div class="stat-num">4</div><div class="stat-label">Peta Analisis</div></div>
           <div class="stat-box"><div class="stat-num">1</div><div class="stat-label">Bisnis Fokus</div></div>
@@ -438,32 +425,45 @@
           <div class="stat-box"><div class="stat-num">6</div><div class="stat-label">Anggota Tim</div></div>
         </div>
       </div>
-      <div class="reveal">
-        <div class="gis-diagram">
-          <div class="diagram-center">🗺 I Am Geprek GIS</div>
-          <div class="diagram-row">
-            <div class="diagram-chip hot"><span class="chip-icon">📊</span>Segmentasi Pasar</div>
-            <div class="diagram-chip hot"><span class="chip-icon">🏪</span>Kompetitor</div>
-          </div>
-          <div class="diagram-row">
-            <div class="diagram-chip hot"><span class="chip-icon">📍</span>Aksesibilitas</div>
-            <div class="diagram-chip hot"><span class="chip-icon">🎓</span>Keramaian</div>
-          </div>
-        </div>
+      <div class="reveal" style="text-align: center;">
+        <img src="assets/images/apa itu gis.png" alt="Tentang Proyek GIS" style="width: 100%; max-width: 400px; height: auto; border-radius: 16px; box-shadow: 0 8px 20px rgba(0,0,0,0.1);">
+      </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- PETA 1 — cream -->
+<!-- TENTANG IAM GEPREK — cream (Gambar di KIRI, teks rata kiri) -->
+<section class="iamgeprek-section">
+  <div class="container-inner">
+    <div class="iamgeprek-grid reverse">
+      <div class="reveal">
+        <div class="iamgeprek-image-frame">
+          <img src="assets/images/logo iam geprek.png" alt="IAm Geprek" onerror="this.src='https://placehold.co/600x400/e8e3dc/a5582c?text=IAm+Geprek'">
+          <div class="image-caption">IAm Geprek · Ayam Geprek Modern</div>
+        </div>
+      </div>
+      <div class="reveal">
+        <div class="section-label">Tentang Bisnis</div>
+        <h2 class="section-title">Mengenal <em>IAm Geprek</em></h2>
+        <p class="section-desc"><strong>IAm Geprek</strong> adalah brand kuliner yang mengusung konsep ayam geprek modern dengan cita rasa khas Indonesia. Berawal dari proyek analisis spasial dalam mata kuliah GIS for Business, nama ini kemudian diadaptasi sebagai representasi kelompok yang berfokus pada pengembangan bisnis ayam geprek berbasis pemetaan geospasial.</p>
+        <p class="section-desc">Dalam perkembangannya, IAm Geprek tidak hanya fokus pada cita rasa, tetapi juga pada pengalaman pelanggan dan strategi perluasan gerai yang tepat sasaran. Dengan memanfaatkan analisis GIS untuk menentukan lokasi strategis, IAm Geprek berupaya untuk terus hadir di tengah-tengah komunitas, baik di kawasan padat penduduk, dekat pusat pendidikan, maupun area dengan aksesibilitas tinggi. Proyek pemetaan ini merupakan langkah awal dalam transformasi digital bisnis untuk memastikan setiap keputusan ekspansi berbasis data spasial yang akurat.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PETA 1 — warm-alt -->
 <section class="map-section-1">
   <div class="container-inner">
-    <div class="map-inner">
+    <div class="map-inner reverse">
       <div class="reveal">
         <span class="map-number">01</span>
         <span class="map-tag">Analisis Data</span>
         <h2 class="map-title">Peta Segmentasi<br>Potensi Pasar</h2>
-        <p class="map-desc">Peta ini menampilkan hasil analisis segmentasi wilayah berdasarkan potensi pasar bagi bisnis ayam geprek. Dengan membagi wilayah ke dalam segmen berdasarkan kepadatan penduduk, demografi konsumen, dan daya beli, peta ini membantu mengidentifikasi zona prioritas untuk pengembangan outlet I Am Geprek.</p>
+        <p class="map-desc">Peta ini menampilkan hasil analisis segmentasi wilayah berdasarkan potensi pasar bagi bisnis ayam geprek. Dengan membagi wilayah ke dalam segmen berdasarkan kepadatan penduduk, demografi konsumen, dan daya beli, peta ini membantu mengidentifikasi zona prioritas untuk pengembangan outlet IAm Geprek.</p>
+        <p class="map-desc">Meski secara luas wilayah kota didominasi zona tidak berpotensi, justru kecamatan-kecamatan kecil di pusat kota seperti Bontoala dan Ujung Pandang tampil sebagai zona sangat berpotensi. Ini menunjukkan bahwa luas wilayah bukan penentu pasar, kepadatan tinggi dalam area sempit justru menciptakan peluang lebih besar bagi bisnis kuliner seperti I Am Geprek.</p>
+        <p class="map-desc">6 kecamatan pusat kota menampung kepadatan tertinggi meski wilayahnya paling sempit, menjadikannya zona prioritas ekspansi pertama. Biringkanaya dan Manggala punya luas wilayah terbesar namun masuk kategori tidak berpotensi, persebaran penduduk yang tidak merata membuka celah strategi di pinggiran kota.</p>
         <div class="map-highlights">
           <span class="highlight-chip">Kepadatan Penduduk</span>
           <span class="highlight-chip">Daya Beli</span>
@@ -473,9 +473,7 @@
       </div>
       <div class="reveal">
         <div class="map-frame">
-          <!-- <img src="peta1_segmentasi.png" alt="Peta Segmentasi Pasar"> -->
-          <div class="map-placeholder-icon">🗺</div>
-          <div class="map-placeholder-text">Masukkan foto Peta Segmentasi Potensi Pasar di sini</div>
+          <img src="assets/images/peta kompetitor.jpeg" alt="Peta Segmentasi Pasar">
           <div class="map-frame-label">Peta 1 · Segmentasi Pasar</div>
         </div>
       </div>
@@ -483,15 +481,15 @@
   </div>
 </section>
 
-<!-- PETA 2 — warm-alt -->
+<!-- PETA 2 — cream -->
 <section class="map-section-2">
   <div class="container-inner">
-    <div class="map-inner reverse">
+    <div class="map-inner">
       <div class="reveal">
         <span class="map-number">02</span>
         <span class="map-tag">Analisis Data</span>
         <h2 class="map-title">Peta Analisis<br>Potensi Kompetitor</h2>
-        <p class="map-desc">Peta analisis kompetitor memetakan sebaran restoran atau gerai ayam sejenis di sekitar wilayah target. Visualisasi ini memperlihatkan konsentrasi persaingan, jarak antar kompetitor, serta area yang masih memiliki celah pasar yang dapat dimanfaatkan I Am Geprek.</p>
+        <p class="map-desc">Peta analisis kompetitor memetakan sebaran restoran atau gerai ayam sejenis di sekitar wilayah target. Visualisasi ini memperlihatkan konsentrasi persaingan, jarak antar kompetitor, serta area yang masih memiliki celah pasar yang dapat dimanfaatkan IAm Geprek.</p>
         <div class="map-highlights">
           <span class="highlight-chip">Sebaran Kompetitor</span>
           <span class="highlight-chip">Jarak Antar Gerai</span>
@@ -500,26 +498,26 @@
         </div>
       </div>
       <div class="reveal">
-        <div class="map-frame">
-          <!-- <img src="peta2_kompetitor.png" alt="Peta Kompetitor"> -->
-          <div class="map-placeholder-icon">🏪</div>
-          <div class="map-placeholder-text">Masukkan foto Peta Analisis Potensi Kompetitor di sini</div>
-          <div class="map-frame-label">Peta 2 · Kompetitor</div>
+        <div class="map-frame" style="overflow: auto; max-height: 600px;">
+          <img src="assets/images/peta potensi pasar.jpeg" alt="Peta Analisis Kompetitor" style="width: 100%; height: auto; display: block;">
+          <div class="map-frame-label">Peta 2 · Analisis Kompetitor</div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- PETA 3 — cream -->
+<!-- PETA 3 — warm-alt -->
 <section class="map-section-3">
   <div class="container-inner">
-    <div class="map-inner">
+    <div class="map-inner reverse">
       <div class="reveal">
         <span class="map-number">03</span>
         <span class="map-tag">Analisis Data · Buffer</span>
         <h2 class="map-title">Peta Aksesibilitas<br>Metode Buffer</h2>
-        <p class="map-desc">Menggunakan metode analisis buffer, peta ini menggambarkan jangkauan akses dari lokasi potensial I Am Geprek dalam radius tertentu. Metode buffer membantu menentukan area layanan, menilai kemudahan konsumen menjangkau gerai, serta mengidentifikasi infrastruktur pendukung seperti jalan utama dan transportasi umum.</p>
+        <p class="map-desc">Menggunakan metode analisis buffer, peta ini menggambarkan jangkauan akses dari lokasi potensial IAm Geprek dalam radius tertentu. Metode buffer membantu menentukan area layanan, menilai kemudahan konsumen menjangkau gerai, serta mengidentifikasi infrastruktur pendukung seperti jalan utama dan transportasi umum.</p>
+        <p class="map-desc">Buffer jalan menunjukkan bahwa jaringan jalan di Makassar sudah sangat merata, namun kualitas aksesibilitasnya tidak merata. Zona hijau (direkomendasikan) dan kuning (sangat direkomendasikan) tersebar tipis di tengah lapisan biru — artinya hanya lokasi yang persis berada di pinggir jalan arteri utama yang benar-benar mudah dijangkau konsumen.</p>
+        <p class="map-desc">Wilayah barat kota seperti Ujung Pandang, Wajo, dan Mariso memiliki konsentrasi buffer hijau dan kuning tertinggi — lokasi di sini unggul dari sisi aksesibilitas jalan. Biringkanaya dan Tamalanrea memiliki jaringan jalan panjang namun mayoritas masuk kategori tidak direkomendasikan — panjang jalan tidak otomatis berarti mudah diakses konsumen.</p>
         <div class="map-highlights">
           <span class="highlight-chip">Analisis Buffer</span>
           <span class="highlight-chip">Jangkauan Akses</span>
@@ -528,10 +526,8 @@
         </div>
       </div>
       <div class="reveal">
-        <div class="map-frame">
-          <!-- <img src="peta3_buffer.png" alt="Peta Aksesibilitas Buffer"> -->
-          <div class="map-placeholder-icon">📍</div>
-          <div class="map-placeholder-text">Masukkan foto Peta Aksesibilitas (Buffer) di sini</div>
+        <div class="map-frame" style="overflow: auto; max-height: 600px;">
+          <img src="assets/images/Peta Aksesbilitas Jalan.png" alt="Peta Aksesibilitas Buffer" style="width: 100%; height: auto; display: block;">
           <div class="map-frame-label">Peta 3 · Aksesibilitas Buffer</div>
         </div>
       </div>
@@ -539,27 +535,25 @@
   </div>
 </section>
 
-<!-- PETA 4 — warm-alt -->
+<!-- PETA 4 — cream -->
 <section class="map-section-4">
   <div class="container-inner">
-    <div class="map-inner reverse">
+    <div class="map-inner">
       <div class="reveal">
         <span class="map-number">04</span>
         <span class="map-tag">Analisis Data</span>
         <h2 class="map-title">Peta Keramaian<br>Fasilitas Pendidikan</h2>
-        <p class="map-desc">Peta ini memetakan kepadatan fasilitas pendidikan (sekolah, kampus, lembaga kursus) di sekitar lokasi potensial bisnis. Kawasan dengan konsentrasi tinggi fasilitas pendidikan mencerminkan potensi konsumen yang besar, terutama pelajar dan mahasiswa sebagai target pasar utama I Am Geprek.</p>
+        <p class="map-desc">Peta ini memetakan kepadatan fasilitas pendidikan (sekolah, kampus, lembaga kursus) di sekitar lokasi potensial bisnis. Kawasan dengan konsentrasi tinggi fasilitas pendidikan mencerminkan potensi konsumen yang besar, terutama pelajar dan mahasiswa sebagai target pasar utama IAm Geprek.</p>
         <div class="map-highlights">
           <span class="highlight-chip">Kepadatan Kampus</span>
-          <span class="highlight-chip">Sekolah & Kursus</span>
+          <span class="highlight-chip">Sekolah &amp; Kursus</span>
           <span class="highlight-chip">Segmen Pelajar</span>
           <span class="highlight-chip">Zona Ramai</span>
         </div>
       </div>
       <div class="reveal">
-        <div class="map-frame">
-          <!-- <img src="peta4_pendidikan.png" alt="Peta Keramaian Fasilitas Pendidikan"> -->
-          <div class="map-placeholder-icon">🎓</div>
-          <div class="map-placeholder-text">Masukkan foto Peta Keramaian Fasilitas Pendidikan di sini</div>
+        <div class="map-frame" style="overflow: auto; max-height: 600px;">
+          <img src="assets/images/peta_fasilitas pendidikan.jpeg" alt="Peta Keramaian Fasilitas Pendidikan" style="width: 100%; height: auto; display: block;">
           <div class="map-frame-label">Peta 4 · Fasilitas Pendidikan</div>
         </div>
       </div>
@@ -567,13 +561,13 @@
   </div>
 </section>
 
-<!-- KESIMPULAN — cream -->
+<!-- KESIMPULAN — warm-alt -->
 <section class="kesimpulan-section">
   <div class="container-inner">
     <div class="reveal kesimpulan-header">
       <div class="section-label">Kesimpulan</div>
       <h2 class="section-title">Manfaat <em>Pemetaan GIS</em><br>untuk Bisnis</h2>
-      <p class="kesimpulan-intro">Secara keseluruhan, penerapan GIS dalam bisnis I Am Geprek memberikan gambaran yang lebih jelas dan berbasis data dalam pengambilan keputusan strategis, mulai dari pemilihan lokasi hingga pemahaman terhadap pasar dan persaingan.</p>
+      <p class="kesimpulan-intro">Secara keseluruhan, penerapan GIS dalam bisnis IAm Geprek memberikan gambaran yang lebih jelas dan berbasis data dalam pengambilan keputusan strategis, mulai dari pemilihan lokasi hingga pemahaman terhadap pasar dan persaingan.</p>
     </div>
 
     <div class="manfaat-grid reveal">
@@ -590,7 +584,7 @@
         <div class="manfaat-icon-wrap">
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
         </div>
-        <h3 class="manfaat-title">Memahami Pasar & Konsumen</h3>
+        <h3 class="manfaat-title">Memahami Pasar &amp; Konsumen</h3>
         <p class="manfaat-desc">Segmentasi wilayah berdasarkan demografi dan daya beli membantu bisnis memahami siapa target konsumennya dan di mana mereka berada, sehingga strategi pemasaran bisa lebih terarah.</p>
       </div>
 
@@ -629,14 +623,14 @@
     </div>
 
     <div class="reveal kesimpulan-penutup">
-      <p>Penerapan GIS bukan hanya untuk perusahaan besar, bagi bisnis kuliner seperti I Am Geprek, pemetaan ini menjadi keunggulan kompetitif yang nyata dalam memilih lokasi, memahami pasar, dan merancang strategi pertumbuhan yang berkelanjutan.</p>
+      <p>Penerapan GIS bukan hanya untuk perusahaan besar, bagi bisnis kuliner seperti IAm Geprek, pemetaan ini menjadi keunggulan kompetitif yang nyata dalam memilih lokasi, memahami pasar, dan merancang strategi pertumbuhan yang berkelanjutan.</p>
     </div>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-logo">I Am <span>Geprek</span></div>
+  <div class="footer-logo">IAm <span>Geprek</span></div>
   <div class="footer-sub">GIS for Business · Kelompok 1</div>
   <div class="footer-line"></div>
   <div class="footer-copy">
